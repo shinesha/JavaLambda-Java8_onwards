@@ -13,7 +13,7 @@ public class BankAccount {
     final Lock lock = new ReentrantLock();
 
     // BiFunction function that takes in two inputs as arguement and returns the result
-    BiFunction<Double, Double, Double> subtractFunction =(a, b) -> a +b;
+    BiFunction<Double, Double, Double> subtractFunction =(a, b) -> a -b;
     BiFunction<Double, Double, Double> addFunction = (a, b) -> a +b;
 
     public BankAccount(int id, double balance, String accountName) {
@@ -22,6 +22,7 @@ public class BankAccount {
         this.accountName = accountName;
     }
 
+    // keep trying until you get the lock, make the transfer then unlock.
     public boolean withdraw(double amount) throws InterruptedException {
 
         if(this.lock.tryLock()){
@@ -44,8 +45,10 @@ public class BankAccount {
         return false;
     }
 
+    // move money from account to account
     public boolean transfer(BankAccount to, double amount) throws InterruptedException {
             if(withdraw(amount)){
+                // if we cannot transfer the money then will keep trying to refund it.
                 System.out.println("Withdrawing amount: " + amount + "from: " + getAccountName());
                 if(to.deposit(amount)){
                     System.out.println("Depositing amount: " + amount + "to: " + to.getAccountName());

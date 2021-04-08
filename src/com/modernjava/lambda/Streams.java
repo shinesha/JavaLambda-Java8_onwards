@@ -1,6 +1,6 @@
 package com.modernjava.lambda;
 
-public class DeclarativeMethods {
+public class Streams {
 
 
 //    //print the numbers
